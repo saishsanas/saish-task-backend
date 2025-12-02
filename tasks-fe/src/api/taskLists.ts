@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TaskList } from "../domain/TaskList";
+import TaskList from "../domain/TaskList";
 
 const API_BASE_URL = "http://localhost:8080/api/task-lists";
 

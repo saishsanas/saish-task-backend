@@ -140,8 +140,9 @@ const CreateUpdateTaskScreen: React.FC = () => {
   }
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <div className="flex items-center space-x-4 mb-6">
+     <div className="min-h-screen p-6 max-w-md mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+     <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+       <div className="flex items-center space-x-4 mb-6">
         <Button 
           variant="ghost"
           aria-label="Go back"
@@ -153,7 +154,12 @@ const CreateUpdateTaskScreen: React.FC = () => {
           {isUpdate ? "Update Task" : "Create Task"}
         </h1>
       </div>
-      {error && <Card className="mb-4 p-4 text-red-500">{error}</Card>}
+      {error && (
+        <Card className="mb-4 p-4 bg-red-600/30 border border-red-500 text-red-300 rounded-xl">
+          {error}
+        </Card>
+      )}
+
       <form onSubmit={(e) => e.preventDefault()}>
         <Input
           label="Title"
@@ -182,25 +188,27 @@ const CreateUpdateTaskScreen: React.FC = () => {
           {Object.values(TaskPriority).map((p) => (
             <Chip
               key={p}
-              color={priority === p ? "primary" : "default"}
-              variant={priority === p ? "solid" : "faded"}
               onClick={() => setPriority(p)}
-              className="cursor-pointer"
+              className={`cursor-pointer px-4 py-2 text-sm rounded-xl transition-all duration-300
+                ${priority === p
+                  ? "bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 text-white shadow-md"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"}`}
             >
               {p} Priority
             </Chip>
           ))}
         </div>
         <Spacer y={4} />
-        <Button 
-          type="submit" 
-          color="primary" 
+        <Button
+          type="submit"
           onClick={createUpdateTask}
           fullWidth
+          className="mt-4 py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 text-white shadow-lg hover:brightness-110 hover:shadow-2xl transition-all duration-300"
         >
           {isUpdate ? "Update Task" : "Create Task"}
         </Button>
       </form>
+      </div>
     </div>
   );
 };

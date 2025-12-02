@@ -75,8 +75,7 @@ const TaskListScreen: React.FC = () => {
       updatedTask.status =
         task.status === TaskStatus.CLOSED ? TaskStatus.OPEN : TaskStatus.CLOSED;
 
-      api
-        .updateTask(listId, task.id, updatedTask)
+      api.updateTask(listId!, task.id!, updatedTask)
         .then(() => api.fetchTasks(listId));
     }
   };
@@ -127,7 +126,7 @@ const TaskListScreen: React.FC = () => {
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => api.deleteTask(listId, task.id)}
+                onClick={() => api.deleteTask(listId!, task.id!)}
                 aria-label={`Delete task "${task.title}"`}
               >
                 <Trash className="h-4 w-4" />
@@ -144,10 +143,10 @@ const TaskListScreen: React.FC = () => {
   if (isLoading) {
     return <Spinner />; // Or your preferred loading indicator
   }
-
-  return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    return (
+      <div className="min-h-screen p-6 max-w-4xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+      <div className="backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl p-6 shadow-xl">
+        <div className="flex items-center justify-between mb-6">
         <div className="flex w-full items-center justify-between">
           <Button
             variant="ghost"
@@ -173,17 +172,21 @@ const TaskListScreen: React.FC = () => {
 
       <Progress
         value={completionPercentage}
-        className="mb-4"
         aria-label="Task completion progress"
+        classNames={{
+          indicator: "bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500",
+          track: "bg-white/10",
+        }}
+        className="mb-4"
       />
       <Button
         onClick={() => navigate(`/task-lists/${listId}/new-task`)}
         aria-label="Add new task"
-        className="mb-4 w-full"
+        className="mb-4 w-full py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 text-white shadow-lg hover:brightness-110 hover:shadow-2xl transition-all duration-300"
       >
-        <Plus className="h-4 w-4" /> Add Task
+        <Plus className="h-5 w-5 mr-2" /> Add Task
       </Button>
-      <div className="border rounded-lg overflow-hidden">
+      <div className="rounded-2xl overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 shadow-xl">
         <Table className="w-full" aria-label="Tasks list">
           <TableHeader>
             <TableColumn>Completed</TableColumn>
@@ -192,22 +195,23 @@ const TaskListScreen: React.FC = () => {
             <TableColumn>Due Date</TableColumn>
             <TableColumn>Actions</TableColumn>
           </TableHeader>
-          <TableBody>{tableRows()}</TableBody>
+          <TableBody>{tableRows() || []}</TableBody>
         </Table>
       </div>
       <Spacer y={4} />
       <div className="flex justify-end">
         <Button
-          color="danger"
-          startContent={<Minus size={20} />}
           onClick={deleteTaskList}
+          startContent={<Minus size={20} />}
           aria-label="Delete current task list"
+          className="px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold shadow-lg hover:brightness-110 hover:shadow-xl transition-all duration-300"
         >
           Delete TaskList
         </Button>
       </div>
 
       <Spacer y={4} />
+      </div>
     </div>
   );
 };
